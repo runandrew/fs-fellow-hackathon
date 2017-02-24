@@ -1,0 +1,29 @@
+{
+  "name": "fs-fellow-hackathon",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/runandrew/fs-fellow-hackathon.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/runandrew/fs-fellow-hackathon/issues"
+  },
+  "homepage": "https://github.com/runandrew/fs-fellow-hackathon#readme",
+  "dependencies": {
+    "body-parser": "^1.16.1",
+    "express": "^4.14.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0",
+    "volleyball": "^1.4.1"
+  }
+}
