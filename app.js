@@ -21,6 +21,9 @@ const RTM_EVENTS = require('@slack/client').RTM_EVENTS;
 // const token = process.env.SLACK_API_TOKEN || '';
 const token = 'xoxp-2151814398-97949154657-146141954018-2c18d15e21b7fab80d3df609eb437a84';
 const web = new WebClient(token);
+
+const Andrew = 'U2VTX4JKB';
+
 var rtm = new RtmClient(token);
 
 rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, function (rtmStartData) {
@@ -28,7 +31,8 @@ rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, function (rtmStartData) {
 });
 
 rtm.on(RTM_EVENTS.MESSAGE, function handleRtmMessage(message) {
-  console.log('Message:', message); //this is no doubt the lamest possible message handler, but you get the idea
+  if (message.user === Andrew) console.log('Andrew said: ', message);
+  // console.log('Message:', message); //this is no doubt the lamest possible message handler, but you get the idea
 });
 
 rtm.start();
