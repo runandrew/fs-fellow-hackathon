@@ -15,9 +15,27 @@ const PORT = 8585;
 
 // Auth
 const WebClient = require('@slack/client').WebClient;
+const RtmClient = require('@slack/client').RtmClient;
+const CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS;
+const RTM_EVENTS = require('@slack/client').RTM_EVENTS;
 // const token = process.env.SLACK_API_TOKEN || '';
-const token = 'xoxp-2151814398-115835264133-146901531847-9a968e0bd682a7da3200025fcfa77bb7'
+const token = 'xoxp-2151814398-97949154657-146141954018-2c18d15e21b7fab80d3df609eb437a84';
 const web = new WebClient(token);
+
+const Andrew = 'U2VTX4JKB';
+
+var rtm = new RtmClient(token);
+
+rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, function (rtmStartData) {
+  console.log(`Logged in as ${rtmStartData.self.name} of team ${rtmStartData.team.name}, but not yet connected to a channel`);
+});
+
+rtm.on(RTM_EVENTS.MESSAGE, function handleRtmMessage(message) {
+  if (message.user === Andrew) console.log('Andrew said: ', message);
+  // console.log('Message:', message); //this is no doubt the lamest possible message handler, but you get the idea
+});
+
+rtm.start();
 
 // Middleware
 
@@ -32,15 +50,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use('/api', routerApi);
 
 app.use((req, res, next) => {
-  res.send('Hello');
 
-  // Set scope
-  axios.get('https://slack.com/oauth/authorize', {
-    client_id: '2151814398.146240978852',
-    scope: 'channel.history'
-  })
-  .then(()=>{
-    console.log('the current token', token)
     web.channels.list(function(err, info) {
       if (err) {
         console.log('Error:', err);
@@ -50,7 +60,8 @@ app.use((req, res, next) => {
         }
       }
     });
-    console.log('messages', web.messages.channel)
+
+    // console.log('messages', web.messages.channel);
 
     web.chat.postMessage('#something', 'Hello there', function(err, res) {
       if (err) {
@@ -59,12 +70,12 @@ app.use((req, res, next) => {
         console.log('Message sent: ', res);
       }
     });
-  })
 
 
 
-})
+
 });
+
 
 // Start the server
 app.listen(PORT, () => {
