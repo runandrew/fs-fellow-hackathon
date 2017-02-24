@@ -5,6 +5,9 @@ const express = require('express');
 const volleyball = require('volleyball');
 const bodyParser = require('body-parser');
 
+// Required files
+const routerApi = require('./api/routes');
+
 // App creation
 const app = express();
 const PORT = 8585;
@@ -17,9 +20,13 @@ app.use(volleyball);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+
+// Routers
+app.use('/api', routerApi);
+
 app.use((req, res, next) => {
   res.send('Hello');
-})
+});
 
 // Start the server
 app.listen(PORT, () => {
