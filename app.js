@@ -5,6 +5,7 @@ const express = require('express');
 const volleyball = require('volleyball');
 const bodyParser = require('body-parser');
 const axios = require('axios')
+const fs = require('fs');
 
 // Required files
 const routerApi = require('./api/routes');
@@ -22,6 +23,21 @@ const RTM_EVENTS = require('@slack/client').RTM_EVENTS;
 const token = require('./.secrets.js').apiToken;
 const web = new WebClient(token);
 
+// reads JSON file and pushes new message text as string into messages array, before re-writing the JSON file
+const writeToDB = message => {
+  fs.readFile('./database.json', 'utf8', function readFileCallback(err, data){
+      if (err){
+        console.log(err);
+      } else {
+        let obj = JSON.parse(data); //now it an object
+        obj.messages.push(message); //add some data
+        let json = JSON.stringify(obj); //convert it back to json
+        fs.writeFile('./database.json', json, 'utf8', (error) => {
+          if (error) throw error;
+          console.log('Saved!')
+        }); // write it back
+  }});
+}
 const Andrew = 'U2VTX4JKB';
 
 var rtm = new RtmClient(token);
@@ -31,9 +47,13 @@ rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, function (rtmStartData) {
 });
 
 rtm.on(RTM_EVENTS.MESSAGE, function handleRtmMessage(message) {
-  if (message.user === Andrew) console.log('Andrew said: ', message);
-  // console.log('Message:', message); //this is no doubt the lamest possible message handler, but you get the idea
+  if (message.user === Andrew) {
+    console.log('Andrew said: ', message);
+    // console.log(typeof message.text)
+    writeToDB(message.text);
+  }
 });
+
 
 rtm.start();
 
@@ -63,13 +83,13 @@ app.use((req, res, next) => {
 
     // console.log('messages', web.messages.channel);
 
-    web.chat.postMessage('#something', 'Hello there', function(err, res) {
-      if (err) {
-        console.log('Error:', err);
-      } else {
-        console.log('Message sent: ', res);
-      }
-    });
+    // web.chat.postMessage('#something', 'Hello there', function(err, res) {
+    //   if (err) {
+    //     console.log('Error:', err);
+    //   } else {
+    //     console.log('Message sent: ', res);
+    //   }
+    // });
 
 
 
