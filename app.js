@@ -19,7 +19,7 @@ const RtmClient = require('@slack/client').RtmClient;
 const CLIENT_EVENTS = require('@slack/client').CLIENT_EVENTS;
 const RTM_EVENTS = require('@slack/client').RTM_EVENTS;
 // const token = process.env.SLACK_API_TOKEN || '';
-const token = 'xoxp-2151814398-97949154657-146141954018-2c18d15e21b7fab80d3df609eb437a84';
+const token = require('./.secrets.js').apiToken;
 const web = new WebClient(token);
 
 const Andrew = 'U2VTX4JKB';
