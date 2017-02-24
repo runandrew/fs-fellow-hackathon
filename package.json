@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/runandrew/fs-fellow-hackathon#readme",
   "dependencies": {
+    "@slack/client": "^3.8.1",
+    "axios": "^0.15.3",
     "body-parser": "^1.16.1",
     "express": "^4.14.1"
   },
